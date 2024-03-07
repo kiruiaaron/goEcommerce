@@ -31,6 +31,6 @@ func BuyFromCart(){
 
 }
 
-func InstantBuy(){
+func InstantBuyer(){
 
 }
