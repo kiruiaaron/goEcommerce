@@ -3,7 +3,7 @@ package models
 import (
 	"time"
 
-	"github.com/go-faster/city"
+
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 

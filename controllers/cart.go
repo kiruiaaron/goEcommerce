@@ -11,7 +11,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/kiruiaaron/goEcommerce/database"
 	"github.com/kiruiaaron/goEcommerce/models"
-	"go.mongo.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
@@ -28,10 +28,10 @@ func NewApplication(prodCollection, userCollection *mongo.Collection) *Appplicat
 	}
 }
 
-func (app *Appplication) AddToCart() gin.Handler {
+func (app *Appplication) AddToCart() gin.HandlerFunc{
 
 	return func(c *gin.Context) {
-		productQueryID := c.query("id")
+		productQueryID := c.Query("id")
 		if productQueryID == "" {
 			log.Println("Product is is empty")
 
@@ -71,7 +71,7 @@ func (app *Appplication) AddToCart() gin.Handler {
 func (app *Appplication) RemoveItem() gin.HandlerFunc {
 
 	return func(c *gin.Context) {
-		productQueryID := c.query("id")
+		productQueryID := c.Query("id")
 		if productQueryID == "" {
 			log.Println("Product is is empty")
 
@@ -104,7 +104,7 @@ func (app *Appplication) RemoveItem() gin.HandlerFunc {
 			return
 
 		}
-		c.IndentedJSON(200, "sucessfully remove the item from the cart ")
+		c.IndentedJSON(200, "Successfully remove the item from the cart ")
 
 	}
 }
