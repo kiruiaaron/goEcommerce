@@ -24,7 +24,7 @@ type Appplication struct {
 func NewApplication(prodCollection, userCollection *mongo.Collection) *Appplication {
 	return &Appplication{
 		prodCollection: prodCollection,
-		userCollection: userCollecton,
+		userCollection: userCollection,
 	}
 }
 
@@ -63,7 +63,7 @@ func (app *Appplication) AddToCart() gin.HandlerFunc{
 			return
 
 		}
-		c.IndentedJSON(200, "sucessfully added to the cart ")
+		c.IndentedJSON(200, "successfully added to the cart ")
 	}
 
 }
@@ -128,7 +128,7 @@ func GetItemFromCart() gin.HandlerFunc {
 		defer cancel()
 
 		var filledCart models.User
-		err := userCollection.FindOne(ctx, bson.D{primitive.E{key: "_id", Value: usert_id}}).Decode(&filledCart)
+		err := userCollection.FindOne(ctx, bson.D{primitive.E{Key: "_id", Value: usert_id}}).Decode(&filledCart)
 
 		if err != nil {
 			log.Println(err)
@@ -136,9 +136,9 @@ func GetItemFromCart() gin.HandlerFunc {
 			return
 		}
 
-		filter_match := bson.D{key: "$match", Value: bson.D{primitive.E{key: "_id", Value: usert_id}}}
-		unwind := bson.D{{key: "$unwind", Value: bson.D{primitive.E{key: "path", Value: "$usercart"}}}}
-		grouping := bson.D{{key: "$group", Value: bson.D{primitive.E{key: "_id", Value: "$_id"}, key: "total", Value: bson.D{primitive.E{key: "$sum", Value: "$usercart.price"}}}}}
+		filter_match := bson.D{{Key: "$match", Value: bson.D{primitive.E{Key: "_id", Value: usert_id}}}}
+		unwind := bson.D{{Key: "$unwind", Value: bson.D{primitive.E{Key: "path", Value: "$usercart"}}}}
+		grouping := bson.D{{Key: "$group", Value: bson.D{primitive.E{Key: "_id", Value: "$_id"}, Key: "total", Value: bson.D{primitive.E{Key: "$sum", Value: "$usercart.price"}}}}}
 
 		pointCursor, err := userCollection.Aggregate(ctx, mongo.Pipeline{filter_match, unwind,grouping})
 		if err != nil{
@@ -180,7 +180,7 @@ func (app *Appplication) BuyFromCart() gin.HandlerFunc {
 
 		}
 
-		c.IndentedJSON("successfully placed the order")
+		c.IndentedJSON("successfully placed the order",)
 
 	}
 
@@ -188,7 +188,7 @@ func (app *Appplication) BuyFromCart() gin.HandlerFunc {
 
 func (app *Appplication) InstantBuy() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		productQueryID := c.query("id")
+		productQueryID := c.Query("id")
 		if productQueryID == "" {
 			log.Println("Product is is empty")
 
