@@ -93,7 +93,7 @@ func Signup() gin.HandlerFunc {
 
 		user.Created_At, _ = time.Parse(time.RFC3339, time.Now().Format(time.RFC3339))
 		user.Updated_At, _ = time.Parse(time.RFC3339, time.Now().Format(time.RFC3339))
-		user.ID = primitive.NewObjectID()  
+		user.ID = primitive .NewObjectID()  
 		user.User_ID = user.ID.Hex()
 
 		token, refreshToken, _ := generate.TokenGenerator(*user.Email, *user.First_Name, *user.Last_Name, user.User_ID)
