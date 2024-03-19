@@ -1,9 +1,8 @@
 package main
 
 import (
+	"log"
 	"os"
-
-	"github.com/docker/docker/api/server/router"
 	"github.com/gin-gonic/gin"
 	"github.com/kiruiaaron/goEcommerce/controllers"
 	"github.com/kiruiaaron/goEcommerce/database"
@@ -24,12 +23,12 @@ func main() {
 	router.Use(gin.Logger())
 
 	routes.UserRoutes(router)
-	router.use(middleware.Authentication())
+	router.Use(middleware.Authentication())
 
-	router.Get("/addtocart", app.AddToCart())
-	router.Get("/removeitem", app.RemoveItem())
-	router.Get("/cartcheckout", app.BuyFromCart())
-	router.Get("/instantbuy", app.InstantBuy())
+	router.GET("/addtocart", app.AddToCart())
+	router.GET("/removeitem", app.RemoveItem())
+	router.GET("/cartcheckout", app.BuyFromCart())
+	router.GET("/instantbuy", app.InstantBuy())
 
 	log.Fatal(router.Run(":" + port))
 }

@@ -13,6 +13,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/kiruiaaron/goEcommerce/database"
 	"github.com/kiruiaaron/goEcommerce/models"
+	generate "github.com/kiruiaaron/goEcommerce/tokens"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -28,7 +29,6 @@ func HashPassword(password string) string {
 		log.Panic(err)
 	}
 	return string(bytes)
-
 }
 
 func VeryPassword(userPassword string, givenPassword string) (bool, string) {
@@ -157,7 +157,7 @@ func Login() gin.HandlerFunc {
 }
 
 func ProductViewerAdmin() gin.HandlerFunc {
-
+        
 }
 
 func SearchProduct() gin.HandlerFunc {

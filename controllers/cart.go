@@ -137,7 +137,7 @@ func GetItemFromCart() gin.HandlerFunc {
 
 		filter_match := bson.D{{Key: "$match", Value: bson.D{primitive.E{Key: "_id", Value: usert_id}}}}
 		unwind := bson.D{{Key: "$unwind", Value: bson.D{primitive.E{Key: "path", Value: "$usercart"}}}}
-		grouping := bson.D{{Key: "$group", Value: bson.D{primitive.E{Key: "_id", Value: "$_id"}, Key: "total", Value: bson.D{primitive.E{Key: "$sum", Value: "$usercart.price"}}}}}
+		grouping := bson.D{{Key: "$group", Value: bson.D{primitive.E{Key: "_id", Value: "$_id"}, {Key: "total", Value: bson.D{primitive.E{Key: "$sum", Value: "$usercart.price"}}}}}}
 
 		pointCursor, err := userCollection.Aggregate(ctx, mongo.Pipeline{filter_match, unwind,grouping})
 		if err != nil{
@@ -159,12 +159,12 @@ func GetItemFromCart() gin.HandlerFunc {
 
 }
 
-func (app *Appplication) BuyFromCart() gin.HandlerFunc {
+func (app *Appplication) BuyItemFromCart() gin.HandlerFunc {
 
 	return func(c *gin.Context) {
-		userQuery := c.Query("id")
+		userQueryID := c.Query("id")
 
-		if userQuery == "" {
+		if userQueryID == "" {
 			log.Println("use id is empty")
 			_ = c.AbortWithError(http.StatusBadRequest, errors.New("userID is empty"))
 		}
@@ -172,14 +172,14 @@ func (app *Appplication) BuyFromCart() gin.HandlerFunc {
 		var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
 
 		defer cancel()
-		err := database.BuyFromCart(ctx, app.userCollection, userQuery)
+		err := database.BuyFromCart(ctx, app.userCollection,userQueryID)
 
 		if err != nil {
 			c.IndentedJSON(http.StatusInternalServerError, err)
 
 		}
 
-		c.IndentedJSON("successfully placed the order",)
+		c.IndentedJSON(200,"successfully placed the order")
 
 	}
 

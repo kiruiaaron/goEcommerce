@@ -38,14 +38,14 @@ func AddAddress()gin.HandlerFunc{
 		match_filter := bson.D{{Key:"$match",Value:bson.D{primitive.E{Key:"_id",Value:address}}}}
 		unwind := bson.D{{Key:"$unwind", Value:bson.D{primitive.E{Key:"path",Value:"$address"}}}}
 		group := bson.D{{Key:"$group", Value:bson.D{primitive.E{Key:"_id",Value:"$address_id"},{Key:"count",Value:bson.D{primitive.E{Key:"$sum", Value:1}}}}}}
-		pointcursor, err := userCollection.Aggregate(ctx, mongo.Pipeline{match_filter,unwind,group})
+		pointCursor, err := userCollection.Aggregate(ctx, mongo.Pipeline{match_filter,unwind,group})
 
 		if err != nil{
 			c.IndentedJSON(500, "Internal Server error")
 		}
 
 		var addressInfo []bson.M
-		if err = pointcursor.All(ctx, &addressInfo); err != nil{
+		if err = pointCursor.All(ctx, &addressInfo); err != nil{
 			panic(err)
 		}
 
