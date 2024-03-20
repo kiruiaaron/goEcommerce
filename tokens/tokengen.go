@@ -6,9 +6,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/golang-jwt/jwt/v4"
-	jwt "github.com/golang-jwt/jwt/v4"
-	"github.com/golang-jwt/jwt/v5"
+	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/kiruiaaron/goEcommerce/database"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"

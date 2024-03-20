@@ -45,7 +45,7 @@ func VeryPassword(userPassword string, givenPassword string) (bool, string) {
 
 }
 
-func Signup() gin.HandlerFunc {
+func SignUp() gin.HandlerFunc {
 
 	return func(c *gin.Context) {
 		var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
@@ -157,7 +157,24 @@ func Login() gin.HandlerFunc {
 }
 
 func ProductViewerAdmin() gin.HandlerFunc {
-        
+        return func(c *gin.Context) {
+			var ctx, cancel = context.WithTimeout(context.Background(),100*time.Second)
+			var products models.Product
+			defer cancel()
+			if err := c.BindJSON(&products); err != nil{
+				c.JSON(http.StatusBadRequest, gin.H{"error":err.Error()})
+				return
+			}
+			products.Product_ID = primitive.NewObjectID()
+			_, anyErr := productCollection.InsertOne(ctx, products)
+			if anyErr != nil{
+				c.JSON(http.StatusInternalServerError, gin.H{"error":"not inserted"})
+				return
+			}
+			defer cancel()
+			c.JSON(http.StatusOK,"Successfully added")
+		}
+
 }
 
 func SearchProduct() gin.HandlerFunc {
@@ -182,7 +199,7 @@ func SearchProduct() gin.HandlerFunc {
 			c.AbortWithStatus(http.StatusInternalServerError)
 			return
 		}
-		defer cursor.Close()
+		defer cursor.Close(ctx)
         
 		if err := cursor.Err(); err != nil{
 			log.Println(err)

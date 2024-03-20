@@ -81,7 +81,7 @@ func RemoveCartItem(ctx context.Context, prodCollection, userCollection *mongo.C
 }
 
 
-func BuyFromCart(ctx context.Context, userCollection * mongo.Collection, userID string){
+func BuyItemFromCart(ctx context.Context, userCollection * mongo.Collection, userID string) error{
   //fetch the cart of the user
   //find the cart total
   //create an order with the items
@@ -92,7 +92,7 @@ func BuyFromCart(ctx context.Context, userCollection * mongo.Collection, userID 
   id, err := primitive.ObjectIDFromHex(userID)
   if err != nil{
 	log.Println(err)
-	return
+	return ErrUserIdIsNotValid
   }
 
   var getCartItems models.User
@@ -140,6 +140,7 @@ func BuyFromCart(ctx context.Context, userCollection * mongo.Collection, userID 
    _, err = userCollection.UpdateOne(ctx, filter1, update2)
    if err != nil{
 	log.Println(err)
+	
    }
 
    userCart_empty := make([]models.ProductUser, 0)
@@ -149,9 +150,14 @@ func BuyFromCart(ctx context.Context, userCollection * mongo.Collection, userID 
    _, err = userCollection.UpdateOne(ctx, filter3, update3)
    if err != nil {
 	log.Println(err)
+
    }
+   return nil
+
 
 }
+
+
 
 func InstantBuyer(ctx context.Context, prodCollection, userCollection *mongo.Collection, productID primitive.ObjectID, UserID string) error{
     id, err := primitive.ObjectIDFromHex(UserID)
