@@ -107,7 +107,7 @@ func UpdateAllTokens(signedToken string, signedRefreshToken string, userId strin
 		Upsert: &upsert,
 	}
 	_, err := UserData.UpdateOne(ctx, filter, bson.D{
-		{Key: "&set", Value: updateObj},
+		{Key: "$set", Value: updateObj},
 	},
 &opt)
 defer cancel()
