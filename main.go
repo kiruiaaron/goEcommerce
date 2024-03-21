@@ -7,7 +7,7 @@ import (
 	"github.com/kiruiaaron/goEcommerce/controllers"
 	"github.com/kiruiaaron/goEcommerce/database"
 	"github.com/kiruiaaron/goEcommerce/middleware"
-	"github.com/kiruiaaron/goEcommerce/routes"
+	routes"github.com/kiruiaaron/goEcommerce/routes"
 )
 
 func main() {
